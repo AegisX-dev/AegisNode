@@ -31,7 +31,7 @@ interface TeamMember {
 /* ═══════════════════════════════════════════════
    CONSTANTS
    ═══════════════════════════════════════════════ */
-const INSTALL_CMD = "npm i -g @aegis/node-cli && aegis start";
+const INSTALL_CMD = "curl -sL https://aegis.node/install | bash";
 
 const AUCTION_PEERS: AuctionBid[] = [
   { node: "node_kamal", stability: 92, latency: "12ms", status: "bidding" },
@@ -189,22 +189,17 @@ function Header() {
    HERO
    ═══════════════════════════════════════════════ */
 function HeroSection() {
-  const [nodeType, setNodeType] = useState<"super" | "light">("super");
   const [copied, setCopied] = useState(false);
-
-  const currentCmd = nodeType === "super"
-    ? "curl -sL https://aegis.node/install | bash -s -- --super"
-    : "curl -sL https://aegis.node/install | bash -s -- --light";
 
   const copyCommand = useCallback(async () => {
     try {
-      await navigator.clipboard.writeText(currentCmd);
+      await navigator.clipboard.writeText(INSTALL_CMD);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
       /* clipboard API unavailable in some contexts */
     }
-  }, [currentCmd]);
+  }, []);
 
   return (
     <section
@@ -235,33 +230,9 @@ function HeroSection() {
         network. 100% offline. Zero data leaks.
       </p>
 
-      {/* Node Type Selector */}
-      <div className="animate-fade-in-up stagger-2 mt-8 flex gap-2 border border-white/[0.08] p-1 rounded-lg bg-white/[0.02]">
-        <button
-          onClick={() => setNodeType("super")}
-          className={`px-4 py-2 text-xs font-mono rounded-md cursor-pointer transition-all duration-200 ${
-            nodeType === "super"
-              ? "bg-[#00FFAA] text-black font-semibold shadow-glow-green"
-              : "text-[#88889C] hover:text-[#E8E8EC]"
-          }`}
-        >
-          Super Node (Full AI)
-        </button>
-        <button
-          onClick={() => setNodeType("light")}
-          className={`px-4 py-2 text-xs font-mono rounded-md cursor-pointer transition-all duration-200 ${
-            nodeType === "light"
-              ? "bg-[#00E5FF] text-black font-semibold shadow-glow-blue"
-              : "text-[#88889C] hover:text-[#E8E8EC]"
-          }`}
-        >
-          Light Node (Edge AI)
-        </button>
-      </div>
-
       {/* Terminal Widget */}
-      <div className="animate-fade-in-up stagger-3 mt-8 w-full max-w-xl">
-        <div className={`terminal transition-all duration-300 ${nodeType === "super" ? "border-glow-green" : "border-glow-blue"}`}>
+      <div className="animate-fade-in-up stagger-3 mt-12 w-full max-w-xl">
+        <div className="terminal border-glow-green">
           <div className="terminal-bar">
             <span className="terminal-dot bg-[#FF5F57]" />
             <span className="terminal-dot bg-[#FEBC2E]" />
@@ -277,19 +248,19 @@ function HeroSection() {
             title="Click to copy"
           >
             <div className="flex items-center gap-2 overflow-x-auto">
-              <span className={`text-sm shrink-0 transition-colors duration-200 ${nodeType === "super" ? "text-[#00FFAA]" : "text-[#00E5FF]"}`}>$</span>
+              <span className="text-[#00FFAA] text-sm shrink-0">$</span>
               <code className="text-sm text-[#E8E8EC] whitespace-nowrap">
-                {currentCmd}
+                {INSTALL_CMD}
               </code>
             </div>
-            <span className={`shrink-0 text-[#55556A] transition-colors duration-200 ${nodeType === "super" ? "group-hover:text-[#00FFAA]" : "group-hover:text-[#00E5FF]"}`}>
+            <span className="shrink-0 text-[#55556A] group-hover:text-[#00FFAA] transition-colors duration-200">
               {copied ? <CheckIcon /> : <CopyIcon />}
             </span>
           </button>
         </div>
         <p className="mt-3 text-xs text-[#55556A] font-mono">
           {copied ? (
-            <span className={nodeType === "super" ? "text-[#00FFAA]" : "text-[#00E5FF]"}>✓ Copied to clipboard</span>
+            <span className="text-[#00FFAA]">✓ Copied to clipboard</span>
           ) : (
             "Click to copy install command"
           )}
