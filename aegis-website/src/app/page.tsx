@@ -100,7 +100,6 @@ export default function Home() {
           <HeroSection />
           <SimulatorSection />
           <FeaturesSection />
-          <TeamSection />
         </main>
         <Footer />
       </div>
@@ -163,12 +162,7 @@ function Header() {
           >
             Features
           </a>
-          <a
-            href="#team"
-            className="hidden sm:block text-sm text-[#8A8A96] hover:text-[#00FFAA] transition-colors duration-200"
-          >
-            Team
-          </a>
+
           <a
             id="github-link"
             href="https://github.com/aegis-node"
@@ -178,6 +172,17 @@ function Header() {
           >
             <GitHubIcon />
             <span className="hidden sm:inline">GitHub</span>
+          </a>
+
+          <a
+            id="dashboard-link"
+            href="http://localhost:3000"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-[#00FFAA] to-[#00E5FF] text-sm text-[#0B0B0F] font-semibold hover:opacity-90 shadow-glow-green hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+          >
+            <span className="w-2 h-2 rounded-full bg-[#0B0B0F] animate-pulse" />
+            Dashboard
           </a>
         </div>
       </nav>
@@ -391,31 +396,22 @@ function SimulatorSection() {
             </span>
           </div>
 
-          {/* Load bar visualization */}
-          <div className="mb-6 h-2 rounded-full bg-white/5 overflow-hidden">
-            <div
-              className="h-full rounded-full transition-all duration-300 ease-out"
-              style={{
-                width: `${load}%`,
-                background: `linear-gradient(90deg, ${stateConfig.color}CC, ${stateConfig.color})`,
-                boxShadow: `0 0 12px ${stateConfig.color}66`,
-              }}
-            />
-          </div>
-
           {/* Slider */}
           <input
             id="sim-slider"
             type="range"
-            min={10}
+            min={0}
             max={100}
             value={load}
             onChange={(e) => handleLoadChange(Number(e.target.value))}
             className={`sim-slider state-${simState}`}
+            style={{
+              background: `linear-gradient(90deg, ${stateConfig.color} 0%, ${stateConfig.color} ${load}%, rgba(255, 255, 255, 0.08) ${load}%, rgba(255, 255, 255, 0.08) 100%)`,
+            }}
             aria-label="Simulated System Load"
           />
           <div className="flex justify-between mt-2 text-xs text-[#55556A] font-mono">
-            <span>10%</span>
+            <span>0%</span>
             <span>Simulated CPU / RAM Load</span>
             <span>100%</span>
           </div>
