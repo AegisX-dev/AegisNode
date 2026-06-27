@@ -112,10 +112,18 @@ export default function Home() {
    ═══════════════════════════════════════════════ */
 function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [dashboardUrl, setDashboardUrl] = useState("http://localhost:3000");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll, { passive: true });
+
+    if (window.location.port === "3000") {
+      setDashboardUrl("http://localhost:3001");
+    } else {
+      setDashboardUrl("http://localhost:3000");
+    }
+
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
@@ -176,7 +184,7 @@ function Header() {
 
           <a
             id="dashboard-link"
-            href="http://localhost:3000"
+            href={dashboardUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-[#00FFAA] to-[#00E5FF] text-sm text-[#0B0B0F] font-semibold hover:opacity-90 shadow-glow-green hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
