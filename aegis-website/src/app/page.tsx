@@ -42,9 +42,9 @@ const AUCTION_PEERS: AuctionBid[] = [
 const FEATURES: FeatureCard[] = [
   {
     icon: <BrainIcon />,
-    title: "Offline Inference",
+    title: "Edge Neural Network",
     description:
-      "Local crash prediction via Ollama + Phi-3 Mini. Zero data leaves your machine — full privacy, full speed.",
+      "A pre-trained local Feedforward Neural Network (MLP) running in <1ms with 0% CPU/RAM overhead and zero external dependencies.",
     accentColor: "#00FFAA",
   },
   {
