@@ -286,7 +286,7 @@ export default function Dashboard() {
   };
 
   // Helper to select node for graphing (usually default to the first active node or origin)
-  const graphNodeId = nodes.find(n => n.is_online || n.status !== 'offline')?.id || '';
+  const graphNodeId = Object.keys(telemetryHistory).find(id => telemetryHistory[id]?.length > 0) || nodes.find(n => n.is_online)?.id || '';
   const chartData = telemetryHistory[graphNodeId] || [];
 
   // Derive current metric values for stat pills
@@ -516,7 +516,7 @@ export default function Dashboard() {
                       </tr>
                     ) : (
                       nodes.map((node) => {
-                        const isOffline = !node.is_online && node.status === 'offline';
+                        const isOffline = !node.is_online;
                         const statusClass = getStatusClass(node.status, isOffline);
                         return (
                           <tr key={node.id} className={`node-row node-row--${statusClass}`}>
@@ -533,28 +533,24 @@ export default function Dashboard() {
                             <td className="py-3 px-4 font-body text-xs text-text-secondary">{node.os_env}</td>
                             <td className="py-3 px-4 font-mono text-xs text-text-secondary">{node.total_ram} GB</td>
                             <td className="py-3 px-4">
-                              {isOffline ? (
-                                <span className="text-text-muted text-xs">—</span>
-                              ) : (
-                                <div className="flex gap-4 font-mono text-xs text-text-secondary">
-                                  <span className="flex items-center gap-1">
-                                    <Cpu size={11} className="text-neon-teal opacity-70" />
-                                    {node.current_cpu?.toFixed(0) || '0'}%
-                                  </span>
-                                  <span className="flex items-center gap-1">
-                                    <HardDrive size={11} className="text-neon-red opacity-70" />
-                                    {node.current_ram?.toFixed(0) || '0'}%
-                                  </span>
-                                  <span className="flex items-center gap-1">
-                                    <Thermometer size={11} className="text-neon-amber opacity-70" />
-                                    {node.current_temp?.toFixed(0) || '45'}°C
-                                  </span>
-                                </div>
-                              )}
+                              <div className="flex gap-4 font-mono text-xs text-text-secondary">
+                                <span className="flex items-center gap-1">
+                                  <Cpu size={11} className="text-neon-teal opacity-70" />
+                                  {isOffline ? '0' : (node.current_cpu?.toFixed(0) || '0')}%
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <HardDrive size={11} className="text-neon-red opacity-70" />
+                                  {isOffline ? '0' : (node.current_ram?.toFixed(0) || '0')}%
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Thermometer size={11} className="text-neon-amber opacity-70" />
+                                  {isOffline ? '0' : (node.current_temp?.toFixed(0) || '0')}°C
+                                </span>
+                              </div>
                             </td>
                             <td className="py-3 px-4 text-right">
                               <span className={`badge badge--${statusClass}`}>
-                                {isOffline ? 'OFFLINE' : node.status}
+                                {isOffline ? 'OFFLINE' : 'ONLINE'}
                               </span>
                             </td>
                           </tr>
