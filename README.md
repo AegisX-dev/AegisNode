@@ -71,4 +71,4 @@ Aegis Node is built on the principle of **Responsible AI**. By leveraging local 
 ---
 
 ## 👥 The Team
-Built by **Team Aegis** (Dev Sharma & Sambhav Sharma) for **DevGathering 2K26**.
+Built by **Team Aegis** (Dev Sharma & Kamal Sharma) for **DevGathering 2K26**.
